@@ -6,12 +6,12 @@
 
     <div class="w-72 flex flex-col gap-4">
       <NuxtLink to="/read/56431">
-        <HomeListButton />
+        <HomeComponentsListButton />
       </NuxtLink>
 
       <NuxtLink to="/create">
         <ShareSecondaryButton label="Criar uma lista de compras">
-          <template #node-icon>
+          <template v-slot:node-icon>
             <div
               class="size-12 bg-primary-100 flex justify-center items-center rounded-xl"
             >

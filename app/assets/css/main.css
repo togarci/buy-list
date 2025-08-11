@@ -19,6 +19,11 @@ body {
   @apply min-w-screen min-h-screen font-Inter;
 }
 
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
 p,
 span {
   font-size-adjust: 0.5;
