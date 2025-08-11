@@ -38,6 +38,10 @@ onMounted(() => {
         >{{ placeholder }}</span
       >
 
+      <span v-else>{{
+        options.find((option) => option.value === model)?.label
+      }}</span>
+
       <Icon
         name="material-symbols:arrow-forward-ios-rounded"
         class="text-gray-700 ease-linear duration-200 transition-transform absolute top-3.5 right-4"
@@ -48,13 +52,15 @@ onMounted(() => {
         v-if="isOpenSelect"
         class="bg-white border w-full absolute top-12 z-10 left-0 border-gray-200 rounded-xl"
       >
-        <span
+        <button
+          type="button"
           v-for="(option, index) in options"
           :key="`${option.label}-${index}`"
-          class="w-full px-4 hover:bg-gray-100 py-3"
+          class="w-full px-4 text-start hover:bg-gray-100 py-3"
+          @click="model = option.value"
         >
           {{ option.label }}
-        </span>
+        </button>
       </div>
     </div>
 
