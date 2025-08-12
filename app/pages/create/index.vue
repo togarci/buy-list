@@ -15,6 +15,8 @@ const { value: productName, errorMessage: productNameFormError } =
   useField('productName');
 const { value: type, errorMessage: typeFormError } = useField('type');
 
+const { value: price, errorMessage: priceFormError } = useField('price');
+
 const onSubmit = handleSubmit((values) => {
   console.log(values);
 });
@@ -79,6 +81,16 @@ const categorias = [
         placeholder="Selecione um tipo"
         :options="categorias"
       />
+
+      <div class="flex gap-4 w-full">
+        <ShareCustomInput
+          label="Preço"
+          name="price"
+          v-model="price"
+          :error="priceFormError"
+          variant="price"
+        />
+      </div>
 
       <SharePrimaryButton type="submit" label="Adicionar item" />
     </form>
