@@ -1,27 +1,14 @@
 <script setup lang="ts">
-import { currencyBRLMask } from '~/utils/currency-brl';
-
-const props = defineProps<{
+defineProps<{
   label?: string;
   name?: string;
   placeholder?: string;
   error: string | undefined;
   variant?: 'price';
+  autocomplete?: HTMLInputElement['autocomplete'];
 }>();
 
 const model = defineModel();
-
-const handleInput = (e: Event) => {
-  if (props.variant !== 'price') return;
-  const target = e.target as HTMLInputElement;
-  const value = Number(target?.value);
-
-  if (value) {
-    const formatted = currencyBRLMask(Number(target.value), true);
-    target.value = formatted;
-    model.value = formatted;
-  }
-};
 </script>
 
 <template>
@@ -35,18 +22,38 @@ const handleInput = (e: Event) => {
     >
       <span
         class="text-sm font-normal font-Montserrat"
-        :class="{ 'text-gray-600/70': !model, 'text-black': model }"
+        :class="{
+          'text-gray-600/70': model === 0,
+          'text-black': typeof model === 'number' && model > 0.0,
+        }"
         v-if="variant === 'price'"
         >R$</span
       >
+      <input
+        v-money3="{
+          thousands: '.',
+          decimal: ',',
+          precision: 2,
+        }"
+        :id="name?.replaceAll(' ', '-')"
+        type="text"
+        :name="name"
+        v-model="model"
+        :placeholder="placeholder"
+        :autocomplete="autocomplete"
+        class="size-full font-Montserrat text-black placeholder:text-600 font-normal text-sm"
+        v-if="variant === 'price'"
+      />
+
       <input
         :id="name?.replaceAll(' ', '-')"
         type="text"
         :name="name"
         v-model="model"
         :placeholder="placeholder"
-        @input="handleInput"
+        :autocomplete="autocomplete"
         class="size-full font-Montserrat text-black placeholder:text-600 font-normal text-sm"
+        v-else
       />
     </div>
 

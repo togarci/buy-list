@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import HeaderBackRoute from '~/components/share/HeaderBaskRoute.vue/index.vue';
+import CustomImageInput from '~/components/create/components/CustomImageInput/index.vue';
 import productFormSchema from '~/components/create/schemas/productFormSchema';
 import { useField, useForm } from 'vee-validate';
 
 const { handleSubmit } = useForm({
   validationSchema: productFormSchema,
+  initialValues: {
+    quantity: 1,
+  },
 });
 
 const { value: category, errorMessage: categoryFormError } =
@@ -16,6 +20,9 @@ const { value: productName, errorMessage: productNameFormError } =
 const { value: type, errorMessage: typeFormError } = useField('type');
 
 const { value: price, errorMessage: priceFormError } = useField('price');
+
+const { value: quantity, errorMessage: quantityFormError } =
+  useField('quantity');
 
 const onSubmit = handleSubmit((values) => {
   console.log(values);
@@ -83,14 +90,24 @@ const categorias = [
       />
 
       <div class="flex gap-4 w-full">
+        <ShareCustomQuantity
+          name="quantity"
+          label="Quantidade"
+          v-model="quantity"
+          :error="quantityFormError"
+        />
+
         <ShareCustomInput
           label="Preço"
           name="price"
           v-model="price"
           :error="priceFormError"
           variant="price"
+          autocomplete="off"
         />
       </div>
+
+      <CustomImageInput :limitMbSize="1" />
 
       <SharePrimaryButton type="submit" label="Adicionar item" />
     </form>
