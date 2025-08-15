@@ -23,21 +23,14 @@ export default withNuxt([
       '@typescript-eslint': tsPlugin,
       prettier: prettierPlugin,
     },
-    extends: [
-      'plugin:vue/vue3-recommended',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:prettier/recommended',
-    ],
+    extends: ['plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
     rules: {
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': ['error'],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { vars: 'all', args: 'none' },
-      ],
+      '@typescript-eslint/no-unused-vars': ['warn', { vars: 'all', args: 'none' }],
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },

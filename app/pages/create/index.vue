@@ -1,8 +1,23 @@
 <script setup lang="ts">
-import HeaderBackRoute from '~/components/share/HeaderBaskRoute.vue/index.vue';
-import CustomImageInput from '~/components/create/components/CustomImageInput/index.vue';
-import productFormSchema from '~/components/create/schemas/productFormSchema';
-import { useField, useForm } from 'vee-validate';
+import axios from 'axios';
+
+import HeaderBackRoute from '~/share/components/HeaderBaskRoute.vue/index.vue';
+import CustomImageInput from '~/modules/create/components/CustomImageInput/index.vue';
+import productFormSchema from '~/modules/create/schemas/productFormSchema';
+import CustomSelect, { type options } from '~/modules/create/components/CustomSelect/index.vue';
+import CustomInput from '~/modules/create/components/CustomInput/index.vue';
+import CustomQuantity from '~/modules/create/components/CustomQuantity/index.vue';
+import PrimaryButton from '~/share/components/PrimaryButton/index.vue';
+
+import { useField, useForm, validate } from 'vee-validate';
+import { toast } from 'vue3-toastify';
+import type { RequestCategoryType } from '~/modules/create/types/request-categorys';
+import type { RequestProductType } from '~/modules/create/types/request-product-types';
+
+const dataCategory = ref<RequestCategoryType[]>([]);
+const optionsCategorys = ref<options[]>([]);
+const optionsSubCategorys = ref<options[]>([]);
+const productTypes = ref<options[]>([]);
 
 const { handleSubmit } = useForm({
   validationSchema: productFormSchema,
@@ -11,42 +26,64 @@ const { handleSubmit } = useForm({
   },
 });
 
-const { value: category, errorMessage: categoryFormError } =
-  useField('category');
-const { value: subCategory, errorMessage: subCategoryFormError } =
-  useField('subCategory');
-const { value: productName, errorMessage: productNameFormError } =
-  useField('productName');
+const { value: category, errorMessage: categoryFormError } = useField('category');
+const { value: subCategory, errorMessage: subCategoryFormError } = useField('subCategory');
+const { value: productName, errorMessage: productNameFormError } = useField('productName');
 const { value: type, errorMessage: typeFormError } = useField('type');
-
 const { value: price, errorMessage: priceFormError } = useField('price');
-
-const { value: quantity, errorMessage: quantityFormError } =
-  useField('quantity');
+const { value: quantity, errorMessage: quantityFormError } = useField('quantity');
 
 const onSubmit = handleSubmit((values) => {
   console.log(values);
 });
 
-const categorias = [
-  { label: 'Alimentos', value: 1 },
-  { label: 'Frescos e Hortifruti', value: 2 },
-  { label: 'Padaria & Confeitaria', value: 3 },
-  { label: 'Açougue', value: 4 },
-  { label: 'Peixaria', value: 5 },
-  { label: 'Frios e Laticínios', value: 6 },
-  { label: 'Congelados', value: 7 },
-  { label: 'Mercearia seca', value: 8 },
-  { label: 'Doces, guloseimas e snacks', value: 9 },
-  { label: 'Bebidas', value: 10 },
-  { label: 'Bebês e Infantis', value: 11 },
-  { label: 'Limpeza e Utilidades Domésticas', value: 12 },
-  { label: 'Higiene e Beleza', value: 13 },
-  { label: 'Pets', value: 14 },
-  { label: 'Produtos Naturais e Dietéticos', value: 15 },
-  { label: 'Sazonais e Festas', value: 16 },
-  { label: 'Papelaria e Diversos', value: 17 },
-];
+const getCategorys = async () => {
+  try {
+    const { data } = await axios.get<RequestCategoryType[]>('/api/category');
+    optionsCategorys.value = data?.map((item, index) => {
+      return {
+        label: item.category,
+        value: item.category,
+      };
+    });
+
+    dataCategory.value = data;
+  } catch (error) {
+    toast.error('Ops! Ocorreu um erro no carregamentos algumas categorias');
+  }
+};
+
+const getProductTypes = async () => {
+  const { data } = await axios.get<RequestProductType[]>('/api/product-types');
+
+  const options = data.map((item) => {
+    return {
+      label: item.tipo,
+      value: item.sigla,
+    };
+  });
+
+  productTypes.value = options ?? [];
+};
+
+watch(category, () => {
+  if (category.value) {
+    const selectedCategory = dataCategory.value.find((cat) => cat.category === category.value);
+    const listSubCategory = selectedCategory?.subCategorys?.map((item) => {
+      return {
+        label: item,
+        value: item,
+      };
+    });
+
+    optionsSubCategorys.value = listSubCategory ?? [];
+  }
+});
+
+onMounted(() => {
+  getCategorys();
+  getProductTypes();
+});
 </script>
 
 <template>
@@ -54,25 +91,26 @@ const categorias = [
     <HeaderBackRoute label="Criando Lista" />
 
     <form class="flex flex-col gap-5" @submit.prevent="onSubmit">
-      <ShareCustomSelect
+      <CustomSelect
         v-model="category"
         label="Selecione a categoria do produto"
         name="productCategory"
         :error="categoryFormError"
         placeholder="Selecione uma categoria."
-        :options="categorias"
+        :options="optionsCategorys"
       />
 
-      <ShareCustomSelect
+      <CustomSelect
         v-model="subCategory"
         label="Selecione uma subcategoria do produto"
         name="productSubCategory"
         :error="subCategoryFormError"
         placeholder="Selecione uma subcategoria."
-        :options="categorias"
+        :options="optionsSubCategorys"
+        :disabled="optionsSubCategorys.length === 0"
       />
 
-      <ShareCustomInput
+      <CustomInput
         v-model="productName"
         label="Nome do produto"
         name="productName"
@@ -80,24 +118,19 @@ const categorias = [
         :error="productNameFormError"
       />
 
-      <ShareCustomSelect
+      <CustomSelect
         v-model="type"
         label="Tipo"
         name="productTipo"
         :error="typeFormError"
         placeholder="Selecione um tipo"
-        :options="categorias"
+        :options="productTypes"
       />
 
       <div class="flex gap-4 w-full">
-        <ShareCustomQuantity
-          name="quantity"
-          label="Quantidade"
-          v-model="quantity"
-          :error="quantityFormError"
-        />
+        <CustomQuantity name="quantity" label="Quantidade" v-model="quantity" :error="quantityFormError" />
 
-        <ShareCustomInput
+        <CustomInput
           label="Preço"
           name="price"
           v-model="price"
@@ -109,7 +142,7 @@ const categorias = [
 
       <CustomImageInput :limitMbSize="1" />
 
-      <SharePrimaryButton type="submit" label="Adicionar item" />
+      <PrimaryButton type="submit" label="Adicionar item" />
     </form>
   </main>
 </template>
