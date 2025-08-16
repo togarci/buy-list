@@ -8,8 +8,9 @@ import CustomSelect, { type options } from '~/modules/create/components/CustomSe
 import CustomInput from '~/modules/create/components/CustomInput/index.vue';
 import CustomQuantity from '~/modules/create/components/CustomQuantity/index.vue';
 import PrimaryButton from '~/share/components/PrimaryButton/index.vue';
+import ListButton from '~/share/components/ListButton/index.vue';
 
-import { useField, useForm, validate } from 'vee-validate';
+import { useField, useForm } from 'vee-validate';
 import { toast } from 'vue3-toastify';
 import type { RequestCategoryType } from '~/modules/create/types/request-categorys';
 import type { RequestProductType } from '~/modules/create/types/request-product-types';
@@ -58,7 +59,7 @@ const getProductTypes = async () => {
 
   const options = data.map((item) => {
     return {
-      label: item.tipo,
+      label: `${item.tipo} / ${item.sigla}`,
       value: item.sigla,
     };
   });
@@ -77,6 +78,7 @@ watch(category, () => {
     });
 
     optionsSubCategorys.value = listSubCategory ?? [];
+    subCategory.value = undefined;
   }
 });
 
@@ -87,62 +89,90 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="flex flex-col gap-10 p-5">
+  <main class="flex flex-col gap-10 p-5 xl:p-20">
     <HeaderBackRoute label="Criando Lista" />
 
-    <form class="flex flex-col gap-5" @submit.prevent="onSubmit">
-      <CustomSelect
-        v-model="category"
-        label="Selecione a categoria do produto"
-        name="productCategory"
-        :error="categoryFormError"
-        placeholder="Selecione uma categoria."
-        :options="optionsCategorys"
-      />
-
-      <CustomSelect
-        v-model="subCategory"
-        label="Selecione uma subcategoria do produto"
-        name="productSubCategory"
-        :error="subCategoryFormError"
-        placeholder="Selecione uma subcategoria."
-        :options="optionsSubCategorys"
-        :disabled="optionsSubCategorys.length === 0"
-      />
-
-      <CustomInput
-        v-model="productName"
-        label="Nome do produto"
-        name="productName"
-        placeholder="e.g Milho verde em conserva"
-        :error="productNameFormError"
-      />
-
-      <CustomSelect
-        v-model="type"
-        label="Tipo"
-        name="productTipo"
-        :error="typeFormError"
-        placeholder="Selecione um tipo"
-        :options="productTypes"
-      />
-
-      <div class="flex gap-4 w-full">
-        <CustomQuantity name="quantity" label="Quantidade" v-model="quantity" :error="quantityFormError" />
-
-        <CustomInput
-          label="Preço"
-          name="price"
-          v-model="price"
-          :error="priceFormError"
-          variant="price"
-          autocomplete="off"
-        />
+    <div class="flex w-full max-lg:justify-center gap-10">
+      <div class="w-80 hidden lg:block">
+        <ListButton />
       </div>
 
-      <CustomImageInput :limitMbSize="1" />
+      <form
+        class="flex max-w-[680px] w-full flex-col gap-5 lg:p-6 rounded-2xl lg:border lg:border-gray-200"
+        @submit.prevent="onSubmit"
+      >
+        <CustomSelect
+          v-model="category"
+          label="Selecione a categoria do produto"
+          name="productCategory"
+          :error="categoryFormError"
+          placeholder="Selecione uma categoria."
+          :options="optionsCategorys"
+        />
 
-      <PrimaryButton type="submit" label="Adicionar item" />
-    </form>
+        <CustomSelect
+          v-model="subCategory"
+          label="Selecione uma subcategoria do produto"
+          name="productSubCategory"
+          :error="subCategoryFormError"
+          placeholder="Selecione uma subcategoria."
+          :options="optionsSubCategorys"
+          :disabled="optionsSubCategorys.length === 0"
+        />
+
+        <CustomInput
+          v-model="productName"
+          label="Nome do produto"
+          name="productName"
+          placeholder="e.g Milho verde em conserva"
+          :error="productNameFormError"
+        />
+
+        <div class="lg:hidden">
+          <CustomSelect
+            v-model="type"
+            label="Tipo"
+            name="productTipo"
+            :error="typeFormError"
+            placeholder="Selecione um tipo"
+            :options="productTypes"
+          />
+        </div>
+
+        <div class="flex gap-4 w-full">
+          <div class="max-lg:hidden flex-1">
+            <CustomSelect
+              v-model="type"
+              label="Tipo"
+              name="productTipo"
+              :error="typeFormError"
+              placeholder="Selecione um tipo"
+              :options="productTypes"
+            />
+          </div>
+
+          <div class="w-full lg:w-32">
+            <CustomQuantity name="quantity" label="Quantidade" v-model="quantity" :error="quantityFormError" />
+          </div>
+
+          <div class="w-full lg:w-48">
+            <CustomInput
+              label="Preço"
+              name="price"
+              v-model="price"
+              :error="priceFormError"
+              variant="price"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <CustomImageInput :limitMbSize="1" />
+
+        <div class="max-w-80">
+          <PrimaryButton type="submit" label="Adicionar item" />
+        </div>
+      </form>
+    </div>
   </main>
 </template>

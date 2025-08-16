@@ -42,7 +42,7 @@ onMounted(() => {
         placeholder
       }}</span>
 
-      <span class="capitalize" v-else>{{ options.find((option) => option.value === model)?.label }}</span>
+      <span class="capitalize" v-else>{{ options.find((option: options) => option.value === model)?.label }}</span>
 
       <Icon
         name="material-symbols:arrow-forward-ios-rounded"
@@ -50,7 +50,7 @@ onMounted(() => {
         :class="{ 'rotate-90': !isOpenSelect, '-rotate-90': isOpenSelect }"
       />
 
-      <div v-if="isOpenSelect" class="bg-white border w-full absolute top-12 z-10 left-0 border-gray-200 rounded-xl">
+      <div v-if="isOpenSelect" class="bg-white border w-full absolute top-14 z-10 left-0 border-gray-200 rounded-xl">
         <button
           type="button"
           v-for="(option, index) in options"

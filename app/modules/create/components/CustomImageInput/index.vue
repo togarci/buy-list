@@ -33,30 +33,29 @@ const handleChange = (evt: Event) => {
 <template>
   <div
     @click="handleClick"
-    class="flex rounded-xl justify-center items-center w-ful overflow-hidden border border-dashed border-gray-400 flex-col"
+    class="flex rounded-xl cursor-pointer justify-center items-center w-full overflow-hidden border border-dashed border-gray-400 max-lg:flex-col"
     :class="{ 'py-5 px-10 gap-3': !urlImage }"
   >
     <input
       ref="refInput"
       type="file"
-      class="h-0 invisible"
+      class="h-0 hidden"
       @change="handleChange"
       accept="image/png, image/gif, image/jpeg, image/jpg"
     />
 
     <template v-if="!urlImage">
-      <Icon
-        name="material-symbols:backup-outline-rounded"
-        class="text-5xl text-gray-600"
-      />
+      <Icon name="material-symbols:backup-outline-rounded" class="text-5xl lg:text-6xl text-gray-400/80" />
 
-      <p class="text-black text-center font-Montserrat font-bold text-sm">
-        Clique aqui para fazer o upload do arquivo
-      </p>
+      <div class="flex flex-col gap-3">
+        <p class="text-black text-center font-Montserrat font-bold text-sm lg:text-base">
+          Clique aqui para fazer o upload do arquivo
+        </p>
 
-      <span class="text-gray-600 text-[10px] font-normal">
-        PNG, GIF ou JPEG. Tamanho máximo de arquivo 1 Mb</span
-      >
+        <span class="text-gray-600 text-[10px] lg:text-xs font-normal">
+          PNG, GIF ou JPEG. Tamanho máximo de arquivo 1 Mb</span
+        >
+      </div>
     </template>
 
     <template v-else>

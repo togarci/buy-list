@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ListButton from '~/modules/home/components/listButton/index.vue';
+import ListButton from '~/share/components/ListButton/index.vue';
 import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 </script>
 

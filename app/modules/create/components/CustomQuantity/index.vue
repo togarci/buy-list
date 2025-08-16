@@ -19,9 +19,7 @@ const decrease = () => {
 
 <template>
   <div class="flex flex-col w-full gap-2">
-    <label class="text-xs font-medium" :for="name?.replaceAll(' ', '-')">{{
-      label
-    }}</label>
+    <label class="text-xs font-medium" :for="name?.replaceAll(' ', '-')">{{ label }}</label>
     <div
       class="w-full box-content justify-between flex gap-1.5 items-center rounded-lg h-12 px-4 border"
       :class="{ 'border-red-600': error, 'border-gray-200': !error }"
@@ -37,7 +35,7 @@ const decrease = () => {
 
       <input
         class="text-center block w-14 text-sm font-semibold"
-        type="number"
+        type="text"
         v-model="model"
         autocomplete="off"
         @blur="
