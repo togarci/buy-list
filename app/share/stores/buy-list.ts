@@ -1,6 +1,6 @@
 interface Props {
   listItem: {
-    id: string;
+    id: string | number;
     price: number;
     totalPrice: number;
     quantity: number;
@@ -14,7 +14,7 @@ interface Props {
   };
 }
 
-export const useBuyList = defineStore('buyList', () => {
+export const useBuyListStore = defineStore('buyList', () => {
   const listItems = ref<Props['listItem'][]>([]);
 
   function setListItems(data: Props['listItem'][]) {

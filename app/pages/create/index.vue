@@ -14,15 +14,26 @@ import { useField, useForm } from 'vee-validate';
 import { toast } from 'vue3-toastify';
 import type { RequestCategoryType } from '~/modules/create/types/request-categorys';
 import type { RequestProductType } from '~/modules/create/types/request-product-types';
+import { useBuyListStore } from '~/share/stores/buy-list';
+import calculateTotalPrice from '~/utils/calculateTotalPrice';
 
-const dataCategory = ref<RequestCategoryType[]>([]);
+const { addToList, listItems } = useBuyListStore();
+
+const listDataCategory = ref<RequestCategoryType[]>([]);
+const productTypes = ref<RequestProductType[]>([]);
+
 const optionsCategorys = ref<options[]>([]);
 const optionsSubCategorys = ref<options[]>([]);
-const productTypes = ref<options[]>([]);
+const optionsProductTypes = ref<options[]>([]);
 
-const { handleSubmit } = useForm({
+const { handleSubmit, resetForm } = useForm({
   validationSchema: productFormSchema,
   initialValues: {
+    category: '',
+    subCategory: '',
+    productName: '',
+    type: 'un',
+    price: 0,
     quantity: 1,
   },
 });
@@ -35,7 +46,30 @@ const { value: price, errorMessage: priceFormError } = useField('price');
 const { value: quantity, errorMessage: quantityFormError } = useField('quantity');
 
 const onSubmit = handleSubmit((values) => {
-  console.log(values);
+  try {
+    const totalPrice = calculateTotalPrice(values.price, values.quantity);
+    const findProductType = productTypes.value.find((type) => type.sigla === values.type);
+
+    const body = {
+      id: listItems.length,
+      price: values.price,
+      totalPrice: totalPrice,
+      quantity: values.quantity,
+      product: {
+        name: values.productName,
+        category: values.category,
+        subCategory: values.subCategory,
+        type: findProductType?.tipo ?? '',
+        shortType: findProductType?.sigla ?? '',
+      },
+    };
+
+    addToList(body);
+    toast.success('Produto adicionado com sucesso!');
+    resetForm();
+  } catch (error) {
+    toast.error('Ops! Ocorreu um erro ao adicionar o produto.');
+  }
 });
 
 const getCategorys = async () => {
@@ -48,28 +82,33 @@ const getCategorys = async () => {
       };
     });
 
-    dataCategory.value = data;
+    listDataCategory.value = data;
   } catch (error) {
     toast.error('Ops! Ocorreu um erro no carregamentos algumas categorias');
   }
 };
 
 const getProductTypes = async () => {
-  const { data } = await axios.get<RequestProductType[]>('/api/product-types');
+  try {
+    const { data } = await axios.get<RequestProductType[]>('/api/product-types');
 
-  const options = data.map((item) => {
-    return {
-      label: `${item.tipo} / ${item.sigla}`,
-      value: item.sigla,
-    };
-  });
+    const options = data.map((item) => {
+      return {
+        label: `${item.tipo} / ${item.sigla}`,
+        value: item.sigla,
+      };
+    });
 
-  productTypes.value = options ?? [];
+    productTypes.value = data ?? [];
+    optionsProductTypes.value = options ?? [];
+  } catch (error) {
+    toast.error('Ops! Ocorreu um erro no carregamentos algumas categorias');
+  }
 };
 
 watch(category, () => {
   if (category.value) {
-    const selectedCategory = dataCategory.value.find((cat) => cat.category === category.value);
+    const selectedCategory = listDataCategory.value.find((cat) => cat.category === category.value);
     const listSubCategory = selectedCategory?.subCategorys?.map((item) => {
       return {
         label: item,
@@ -90,7 +129,7 @@ onMounted(() => {
 
 <template>
   <main class="flex flex-col gap-10 p-5 xl:p-20">
-    <HeaderBackRoute label="Criando Lista" />
+    <HeaderBackRoute id="create_page_back_route" label="Criando Lista" />
 
     <div class="flex w-full max-lg:justify-center gap-10">
       <div class="w-80 hidden lg:block">
@@ -135,7 +174,7 @@ onMounted(() => {
             name="productTipo"
             :error="typeFormError"
             placeholder="Selecione um tipo"
-            :options="productTypes"
+            :options="optionsProductTypes"
           />
         </div>
 
@@ -147,7 +186,7 @@ onMounted(() => {
               name="productTipo"
               :error="typeFormError"
               placeholder="Selecione um tipo"
-              :options="productTypes"
+              :options="optionsProductTypes"
             />
           </div>
 
