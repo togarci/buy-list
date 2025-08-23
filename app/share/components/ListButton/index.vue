@@ -34,7 +34,9 @@ watch(
 
       <div class="flex flex-1 flex-col gap-1.5">
         <p class="font-bold text-sm">Lista</p>
-        <span class="text-xs font-medium text-gray-600">{{ lenCategory }} categoria / {{ buyListStore.listItems.length }} item</span>
+        <span class="text-xs font-medium text-gray-600"
+          >{{ lenCategory }} categoria / {{ buyListStore.listItems.length }} item</span
+        >
       </div>
 
       <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
@@ -59,7 +61,11 @@ watch(
               <div class="flex items-center gap-2">
                 <p class="text-sm text-gray-600 capitalize">{{ item.price }} / {{ item.product.shortType }}</p>
 
-                <button @click="() => buyListStore.removeFromList(item.id)" type="button" class="cursor-pointer">
+                <button
+                  @click="() => buyListStore.removeFromList(item.id)"
+                  type="button"
+                  class="cursor-pointer flex items-center"
+                >
                   <Icon name="material-symbols:close" class="text-red-600 text-xl" />
                 </button>
               </div>

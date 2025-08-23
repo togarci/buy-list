@@ -228,7 +228,7 @@ onMounted(() => {
         <CustomImageInput :value="imageRef" @input="handleImageInput" :limitMbSize="1" />
 
         <div class="max-w-80">
-          <PrimaryButton type="submit" label="Adicionar item" />
+          <PrimaryButton type="submit"> Adicionar item </PrimaryButton>
         </div>
       </form>
     </div>
