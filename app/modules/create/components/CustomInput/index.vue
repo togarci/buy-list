@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { typingPriceMask } from '~/utils/price-mask';
 defineProps<{
   label?: string;
   name?: string;
@@ -10,6 +9,25 @@ defineProps<{
 }>();
 
 const model = defineModel<any>();
+
+function formatPrice(value: string | number) {
+  const num = typeof value === 'number'
+    ? value
+    : Number(String(value).replace(/\D/g, '')) / 100;
+  return num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function parsePrice(value: string) {
+  const numeric = value.replace(/\D/g, '');
+  return numeric ? (Number(numeric) / 100).toFixed(2) : '';
+}
+
+function handlePriceInput(evt: Event) {
+  const input = evt.target as HTMLInputElement;
+  const parsed = parsePrice(input.value);
+  model.value = parsed;
+  input.value = formatPrice(parsed);
+}
 </script>
 
 <template>
@@ -23,7 +41,7 @@ const model = defineModel<any>();
         class="text-sm font-normal font-Montserrat"
         :class="{
           'text-gray-600/70': model === 0,
-          'text-black': typeof model === 'number' && model > 0.0,
+          'text-black': Number(model) > 0.0,
         }"
         v-if="variant === 'price'"
         >R$
@@ -32,15 +50,8 @@ const model = defineModel<any>();
         :id="name?.replaceAll(' ', '-')"
         type="text"
         :name="name"
-        :value="model"
-        @input="(evt: any) => (model = typingPriceMask(evt.target?.value))"
-        @focus="
-          (evt: any) => {
-            if (evt.target.value === '0') {
-              model = '';
-            }
-          }
-        "
+        :value="formatPrice(model)"
+        @input="handlePriceInput"
         :placeholder="placeholder"
         :autocomplete="autocomplete"
         class="size-full font-Montserrat text-black placeholder:text-600 font-normal text-sm"

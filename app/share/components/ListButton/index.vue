@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useBuyListStore } from '~/share/stores/buy-list';
+import { currencyBRLMask } from '~/utils/currency-brl';
 
 const buyListStore = useBuyListStore();
 const lenCategory = ref(0);
@@ -51,7 +52,7 @@ watch(
             <div class="flex justify-between">
               <div class="flex items-center gap-2">
                 <img class="size-8" v-if="item.product.image" :src="item.product.image" alt="product image" />
-                <div v-else class="size-8 rounded-md bg-gray-50 flex items-center justify-center">
+                <div v-else class="size-8 rounded-md bg-gray-100 flex items-center justify-center">
                   <Icon name="material-symbols:token" class="text-lg" />
                 </div>
 
@@ -59,15 +60,15 @@ watch(
               </div>
 
               <div class="flex items-center gap-2">
-                <p class="text-sm text-gray-600 capitalize">{{ item.price }} / {{ item.product.shortType }}</p>
+                <p class="text-sm text-gray-600 capitalize">
+                  {{ currencyBRLMask(item.price) }} / {{ item.product.shortType }}
+                </p>
 
-                <button
+                <Icon
                   @click="() => buyListStore.removeFromList(item.id)"
-                  type="button"
-                  class="cursor-pointer flex items-center"
-                >
-                  <Icon name="material-symbols:close" class="text-red-600 text-xl" />
-                </button>
+                  name="material-symbols:close"
+                  class="text-red-600 text-xl cursor-pointer"
+                />
               </div>
             </div>
           </li>
