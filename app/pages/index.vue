@@ -14,11 +14,12 @@ import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 
       <NuxtLink to="/create">
         <SecondaryButton label="Criar uma lista de compras">
-          <template v-slot:node-icon>
+          <div class="flex gap-2 items-center">
             <div class="size-12 bg-primary-100 flex justify-center items-center rounded-xl">
               <Icon name="mdi:plus" class="text-2xl text-primary" />
             </div>
-          </template>
+            <p class="text-primary text-sm font-bold">Criar uma lista de compras</p>
+          </div>
         </SecondaryButton>
       </NuxtLink>
     </div>

@@ -8,6 +8,7 @@ import CustomSelect, { type options } from '~/modules/create/components/CustomSe
 import CustomInput from '~/modules/create/components/CustomInput/index.vue';
 import CustomQuantity from '~/modules/create/components/CustomQuantity/index.vue';
 import PrimaryButton from '~/share/components/PrimaryButton/index.vue';
+import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 import ListButton from '~/share/components/ListButton/index.vue';
 
 import { useField, useForm } from 'vee-validate';
@@ -26,7 +27,16 @@ const optionsCategorys = ref<options[]>([]);
 const optionsSubCategorys = ref<options[]>([]);
 const optionsProductTypes = ref<options[]>([]);
 
-const { handleSubmit, resetForm } = useForm({
+const imageRef = ref<string>('');
+
+const { handleSubmit, resetForm } = useForm<{
+  category: string;
+  subCategory: string;
+  productName: string;
+  type: string;
+  price: number;
+  quantity: number;
+}>({
   validationSchema: productFormSchema,
   initialValues: {
     category: '',
@@ -56,6 +66,7 @@ const onSubmit = handleSubmit((values) => {
       totalPrice: totalPrice,
       quantity: values.quantity,
       product: {
+        image: imageRef.value,
         name: values.productName,
         category: values.category,
         subCategory: values.subCategory,
@@ -65,8 +76,10 @@ const onSubmit = handleSubmit((values) => {
     };
 
     addToList(body);
-    toast.success('Produto adicionado com sucesso!');
     resetForm();
+    imageRef.value = '';
+
+    toast.success('Produto adicionado com sucesso!');
   } catch (error) {
     toast.error('Ops! Ocorreu um erro ao adicionar o produto.');
   }
@@ -106,6 +119,10 @@ const getProductTypes = async () => {
   }
 };
 
+const handleImageInput = (file: string) => {
+  imageRef.value = file;
+};
+
 watch(category, () => {
   if (category.value) {
     const selectedCategory = listDataCategory.value.find((cat) => cat.category === category.value);
@@ -132,8 +149,10 @@ onMounted(() => {
     <HeaderBackRoute id="create_page_back_route" label="Criando Lista" />
 
     <div class="flex w-full max-lg:justify-center gap-10">
-      <div class="w-80 hidden lg:block">
-        <ListButton />
+      <div class="w-80 hidden gap-5 lg:flex flex-col">
+        <ListButton editionMode />
+
+        <SecondaryButton v-if="listItems.length > 0" type="button"> Concluir lista </SecondaryButton>
       </div>
 
       <form
@@ -206,7 +225,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <CustomImageInput :limitMbSize="1" />
+        <CustomImageInput :value="imageRef" @input="handleImageInput" :limitMbSize="1" />
 
         <div class="max-w-80">
           <PrimaryButton type="submit" label="Adicionar item" />

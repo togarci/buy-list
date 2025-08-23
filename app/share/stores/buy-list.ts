@@ -5,6 +5,7 @@ interface Props {
     totalPrice: number;
     quantity: number;
     product: {
+      image: string | null;
       name: string;
       category: string;
       subCategory: string;
@@ -25,7 +26,7 @@ export const useBuyListStore = defineStore('buyList', () => {
     listItems.value.push(item);
   }
 
-  function removeFromList(id: string) {
+  function removeFromList(id: string | number) {
     listItems.value = listItems.value.filter((item) => item.id !== id);
   }
 

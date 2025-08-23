@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { typingPriceMask } from '~/utils/price-mask';
 defineProps<{
   label?: string;
   name?: string;
@@ -8,14 +9,12 @@ defineProps<{
   autocomplete?: HTMLInputElement['autocomplete'];
 }>();
 
-const model = defineModel();
+const model = defineModel<any>();
 </script>
 
 <template>
   <div class="flex flex-col w-full gap-2">
-    <label class="text-xs font-medium" :for="name?.replaceAll(' ', '-')">{{
-      label
-    }}</label>
+    <label class="text-xs font-medium" :for="name?.replaceAll(' ', '-')">{{ label }}</label>
     <div
       class="w-full flex gap-1.5 items-center rounded-lg h-12 py-2 px-4 border"
       :class="{ 'border-red-600': error, 'border-gray-200': !error }"
@@ -27,18 +26,21 @@ const model = defineModel();
           'text-black': typeof model === 'number' && model > 0.0,
         }"
         v-if="variant === 'price'"
-        >R$</span
-      >
+        >R$
+      </span>
       <input
-        v-money3="{
-          thousands: '.',
-          decimal: ',',
-          precision: 2,
-        }"
         :id="name?.replaceAll(' ', '-')"
         type="text"
         :name="name"
-        v-model="model"
+        :value="model"
+        @input="(evt: any) => (model = typingPriceMask(evt.target?.value))"
+        @focus="
+          (evt: any) => {
+            if (evt.target.value === '0') {
+              model = '';
+            }
+          }
+        "
         :placeholder="placeholder"
         :autocomplete="autocomplete"
         class="size-full font-Montserrat text-black placeholder:text-600 font-normal text-sm"

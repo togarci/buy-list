@@ -1,15 +1,11 @@
 <script lang="ts" setup>
 defineProps<{
-  label: string;
+  type?: HTMLButtonElement['type'];
 }>();
 </script>
 
 <template>
-  <div
-    class="w-full bg-gray-010 cursor-pointer items-center flex gap-3 border border-primary p-3.5 rounded-xl"
-  >
-    <slot name="node-icon" />
-
-    <p class="text-primary text-sm font-bold">{{ label }}</p>
-  </div>
+  <button :type="type" class="w-full bg-gray-010 cursor-pointer border border-primary p-3.5 rounded-xl">
+    <div class="text-primary text-sm font-bold"><slot /></div>
+  </button>
 </template>
