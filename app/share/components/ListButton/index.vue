@@ -1,17 +1,22 @@
 <script lang="ts" setup>
-import { useBuyListStore } from '~/share/stores/buy-list';
+import { useBuyListStore } from '~/modules/create/stores/buy-list';
+import type { buyItem } from '~/share/types';
 import { currencyBRLMask } from '~/utils/currency-brl';
 
 const buyListStore = useBuyListStore();
 const lenCategory = ref(0);
 
-defineProps<{
+const model = defineModel();
+
+const props = defineProps<{
   showItems?: boolean;
   editionMode?: boolean;
+  listName?: string;
+  listItems: buyItem[];
 }>();
 
 watch(
-  () => buyListStore.listItems,
+  () => props.listItems,
   (newList) => {
     const filteredCategories = newList.reduce((acc, item) => {
       if (!acc.includes(item.product.category)) {
@@ -34,9 +39,18 @@ watch(
       </div>
 
       <div class="flex flex-1 flex-col gap-1.5">
-        <p class="font-bold text-sm">Lista</p>
+        <input
+          v-if="editionMode"
+          type="text"
+          v-model="model"
+          class="font-bold text-sm placeholder:text-black"
+          placeholder="Lista"
+        />
+
+        <p v-else class="font-bold text-sm line-clamp-1">{{ listName }}</p>
+
         <span class="text-xs font-medium text-gray-600"
-          >{{ lenCategory }} categoria / {{ buyListStore.listItems.length }} item</span
+          >{{ lenCategory }} categoria / {{ props.listItems.length }} item</span
         >
       </div>
 

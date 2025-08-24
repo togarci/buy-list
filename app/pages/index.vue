@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import ListButton from '~/share/components/ListButton/index.vue';
 import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
+import { useDataListStore } from '~/share/stores/data-list';
+
+const { dataList } = useDataListStore();
 </script>
 
 <template>
@@ -8,8 +11,8 @@ import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
     <img src="@/assets/imgs/full_logo.png" alt="logo" />
 
     <div class="w-72 flex flex-col gap-4">
-      <NuxtLink to="/read/56431">
-        <ListButton />
+      <NuxtLink v-for="buyList in dataList" to="/read/56431">
+        <ListButton :listItems="buyList.data" :listName="buyList.name" />
       </NuxtLink>
 
       <NuxtLink to="/create">

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import axios from 'axios';
-
 import HeaderBackRoute from '~/share/components/HeaderBaskRoute.vue/index.vue';
 import CustomImageInput from '~/modules/create/components/CustomImageInput/index.vue';
 import productFormSchema from '~/modules/create/schemas/productFormSchema';
@@ -15,19 +14,24 @@ import { useField, useForm } from 'vee-validate';
 import { toast } from 'vue3-toastify';
 import type { RequestCategoryType } from '~/modules/create/types/request-categorys';
 import type { RequestProductType } from '~/modules/create/types/request-product-types';
-import { useBuyListStore } from '~/share/stores/buy-list';
+import { useBuyListStore } from '~/modules/create/stores/buy-list';
 import calculateTotalPrice from '~/utils/calculateTotalPrice';
+import { useDataListStore } from '~/share/stores/data-list';
+
+const router = useRouter();
 
 const { addToList, listItems } = useBuyListStore();
+const { addToData } = useDataListStore();
 
 const listDataCategory = ref<RequestCategoryType[]>([]);
 const productTypes = ref<RequestProductType[]>([]);
 
+const listName = ref(null);
+const imageRef = ref<string>('');
+
 const optionsCategorys = ref<options[]>([]);
 const optionsSubCategorys = ref<options[]>([]);
 const optionsProductTypes = ref<options[]>([]);
-
-const imageRef = ref<string>('');
 
 const { handleSubmit, resetForm } = useForm<{
   category: string;
@@ -55,7 +59,7 @@ const { value: type, errorMessage: typeFormError } = useField('type');
 const { value: price, errorMessage: priceFormError } = useField('price');
 const { value: quantity, errorMessage: quantityFormError } = useField('quantity');
 
-const onSubmit = handleSubmit((values) => {
+const addItem = handleSubmit((values) => {
   try {
     const totalPrice = calculateTotalPrice(values.price, values.quantity);
     const findProductType = productTypes.value.find((type) => type.sigla === values.type);
@@ -123,6 +127,17 @@ const handleImageInput = (file: string) => {
   imageRef.value = file;
 };
 
+const saveList = () => {
+  const body = {
+    name: listName.value ?? '',
+    data: listItems,
+  };
+
+  addToData(body);
+  toast.success('Lista salva com sucesso !');
+  router.push('/');
+};
+
 watch(category, () => {
   if (category.value) {
     const selectedCategory = listDataCategory.value.find((cat) => cat.category === category.value);
@@ -150,14 +165,14 @@ onMounted(() => {
 
     <div class="flex w-full max-lg:justify-center gap-10">
       <div class="w-80 hidden gap-5 lg:flex flex-col">
-        <ListButton editionMode />
+        <ListButton :listItems="listItems" editionMode v-model="listName" />
 
-        <SecondaryButton v-if="listItems.length > 0" type="button"> Concluir lista </SecondaryButton>
+        <SecondaryButton @click="saveList" v-if="listItems.length > 0" type="button"> Concluir lista </SecondaryButton>
       </div>
 
       <form
         class="flex max-w-[680px] w-full flex-col gap-5 lg:p-6 rounded-2xl lg:border lg:border-gray-200"
-        @submit.prevent="onSubmit"
+        @submit.prevent="addItem"
       >
         <CustomSelect
           v-model="category"

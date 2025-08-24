@@ -23,7 +23,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxt/icon', '@nuxt/eslint', '@pinia/nuxt'],
+  modules: ['@nuxt/icon', '@nuxt/eslint', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
   css: ['./app/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
