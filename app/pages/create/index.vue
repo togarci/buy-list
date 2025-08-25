@@ -20,7 +20,7 @@ import { useDataListStore } from '~/share/stores/data-list';
 
 const router = useRouter();
 
-const { addToList, listItems } = useBuyListStore();
+const buyListStore = useBuyListStore();
 const { addToData } = useDataListStore();
 
 const listDataCategory = ref<RequestCategoryType[]>([]);
@@ -28,6 +28,7 @@ const productTypes = ref<RequestProductType[]>([]);
 
 const listName = ref(null);
 const imageRef = ref<string>('');
+const isOpenForm = ref<boolean>(false);
 
 const optionsCategorys = ref<options[]>([]);
 const optionsSubCategorys = ref<options[]>([]);
@@ -65,7 +66,7 @@ const addItem = handleSubmit((values) => {
     const findProductType = productTypes.value.find((type) => type.sigla === values.type);
 
     const body = {
-      id: listItems.length,
+      id: buyListStore.listItems.length,
       price: values.price,
       totalPrice: totalPrice,
       quantity: values.quantity,
@@ -79,9 +80,10 @@ const addItem = handleSubmit((values) => {
       },
     };
 
-    addToList(body);
+    buyListStore.addToList(body);
     resetForm();
     imageRef.value = '';
+    isOpenForm.value = false;
 
     toast.success('Produto adicionado com sucesso!');
   } catch (error) {
@@ -130,12 +132,16 @@ const handleImageInput = (file: string) => {
 const saveList = () => {
   const body = {
     name: listName.value ?? '',
-    data: listItems,
+    data: buyListStore.listItems,
   };
 
   addToData(body);
   toast.success('Lista salva com sucesso !');
   router.push('/');
+};
+
+const handleBack = () => {
+  isOpenForm.value ? (isOpenForm.value = false) : router.back();
 };
 
 watch(category, () => {
@@ -160,18 +166,38 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="flex flex-col gap-10 p-5 xl:p-20">
-    <HeaderBackRoute id="create_page_back_route" label="Criando Lista" />
+  <main class="flex min-h-screen flex-col gap-10 p-5 xl:p-20">
+    <div class="lg:hidden">
+      <HeaderBackRoute @click="handleBack" id="create_page_back_route" label="Criando Lista" />
+    </div>
+    <div class="max-lg:hidden">
+      <HeaderBackRoute @click="() => router.back()" id="create_page_back_route" label="Criando Lista" />
+    </div>
 
-    <div class="flex w-full max-lg:justify-center gap-10">
-      <div class="w-80 hidden gap-5 lg:flex flex-col">
-        <ListButton :listItems="listItems" editionMode v-model="listName" />
+    <div class="flex max-lg:flex-1 lg:h-min max-lg:justify-center gap-10">
+      <div
+        class="lg:w-80 gap-5 lg:flex w-full flex-col"
+        :class="{ hidden: isOpenForm, 'flex max-lg:justify-between min-h-full': !isOpenForm }"
+      >
+        <ListButton :listItems="buyListStore.listItems" editionMode v-model="listName" />
 
-        <SecondaryButton @click="saveList" v-if="listItems.length > 0" type="button"> Concluir lista </SecondaryButton>
+        <div class="flex flex-col w-full gap-2.5">
+          <div class="lg:hidden">
+            <SecondaryButton @click="isOpenForm = true" type="button"> Adicionar novo item </SecondaryButton>
+          </div>
+          <div class="lg:hidden">
+            <PrimaryButton @click="saveList"> Concluir lista </PrimaryButton>
+          </div>
+
+          <div class="w-full max-lg:hidden" :class="{ 'lg:hidden': buyListStore.listItems.length === 0 }">
+            <SecondaryButton @click="saveList" type="button"> Concluir lista </SecondaryButton>
+          </div>
+        </div>
       </div>
 
       <form
         class="flex max-w-[680px] w-full flex-col gap-5 lg:p-6 rounded-2xl lg:border lg:border-gray-200"
+        :class="{ 'max-lg:hidden': !isOpenForm }"
         @submit.prevent="addItem"
       >
         <CustomSelect
@@ -242,7 +268,7 @@ onMounted(() => {
 
         <CustomImageInput :value="imageRef" @input="handleImageInput" :limitMbSize="1" />
 
-        <div class="max-w-80">
+        <div class="sm:max-w-80">
           <PrimaryButton type="submit"> Adicionar item </PrimaryButton>
         </div>
       </form>

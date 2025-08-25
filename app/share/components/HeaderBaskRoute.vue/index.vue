@@ -4,11 +4,11 @@ defineProps<{
   id: string;
 }>();
 
-const router = useRouter();
+const emits = defineEmits(['click']);
 </script>
 
 <template>
-  <button :id="id" type="button" @click="router.back()" class="flex cursor-pointer gap-4 items-center text-black">
+  <button :id="id" type="button" @click="emits('click')" class="flex cursor-pointer gap-4 items-center text-black">
     <div>
       <Icon name="material-symbols:arrow-left-alt-rounded" class="text-2xl" />
     </div>

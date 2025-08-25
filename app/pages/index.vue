@@ -10,7 +10,7 @@ const { dataList } = useDataListStore();
   <main class="flex min-h-screen min-w-screen flex-col justify-center gap-10 items-center">
     <img src="@/assets/imgs/full_logo.png" alt="logo" />
 
-    <div class="w-72 flex flex-col gap-4">
+    <div class="max-w-96 flex flex-col gap-4">
       <NuxtLink v-for="buyList in dataList" to="/read/56431">
         <ListButton :listItems="buyList.data" :listName="buyList.name" />
       </NuxtLink>

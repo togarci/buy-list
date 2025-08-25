@@ -10,24 +10,29 @@ defineProps<{
 
 const model = defineModel<any>();
 
-function formatPrice(value: string | number) {
-  const num = typeof value === 'number'
-    ? value
-    : Number(String(value).replace(/\D/g, '')) / 100;
+const formatPrice = (value: string | number) => {
+  const num = typeof value === 'number' ? value : Number(String(value).replace(/\D/g, '')) / 100;
   return num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
+};
 
-function parsePrice(value: string) {
+const parsePrice = (value: string) => {
   const numeric = value.replace(/\D/g, '');
   return numeric ? (Number(numeric) / 100).toFixed(2) : '';
-}
+};
 
-function handlePriceInput(evt: Event) {
+const handlePriceInput = (evt: Event) => {
   const input = evt.target as HTMLInputElement;
   const parsed = parsePrice(input.value);
   model.value = parsed;
   input.value = formatPrice(parsed);
-}
+};
+
+const handleFocus = (event: any) => {
+  const input = event.target as HTMLInputElement;
+  setTimeout(() => {
+    input.selectionStart = input.selectionEnd = input.value.length;
+  }, 0);
+};
 </script>
 
 <template>
@@ -52,6 +57,7 @@ function handlePriceInput(evt: Event) {
         :name="name"
         :value="formatPrice(model)"
         @input="handlePriceInput"
+        @focus="handleFocus"
         :placeholder="placeholder"
         :autocomplete="autocomplete"
         class="size-full font-Montserrat text-black placeholder:text-600 font-normal text-sm"
