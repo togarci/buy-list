@@ -56,7 +56,7 @@ watch(
           type="text"
           v-model="model"
           class="font-bold text-sm placeholder:text-black"
-          placeholder="Lista"
+          placeholder="Nome da Lista"
         />
 
         <p v-else class="font-bold text-sm line-clamp-1">{{ listName }}</p>
