@@ -1,3 +1,3 @@
 <template>
-  <h1>List Details</h1>
+  <main class="flex flex-col"></main>
 </template>

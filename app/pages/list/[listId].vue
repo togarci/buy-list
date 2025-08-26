@@ -2,32 +2,34 @@
 import axios from 'axios';
 import Alert from '~/share/components/Alert/index.vue';
 import HeaderBackRoute from '~/share/components/HeaderBaskRoute.vue/index.vue';
-import CustomImageInput from '~/modules/create/components/CustomImageInput/index.vue';
-import productFormSchema from '~/modules/create/schemas/productFormSchema';
-import CustomSelect, { type options } from '~/modules/create/components/CustomSelect/index.vue';
-import CustomInput from '~/modules/create/components/CustomInput/index.vue';
-import CustomQuantity from '~/modules/create/components/CustomQuantity/index.vue';
+import CustomImageInput from '~/modules/list/components/CustomImageInput/index.vue';
+import productFormSchema from '~/modules/list/schemas/productFormSchema';
+import CustomSelect, { type options } from '~/modules/list/components/CustomSelect/index.vue';
+import CustomInput from '~/modules/list/components/CustomInput/index.vue';
+import CustomQuantity from '~/modules/list/components/CustomQuantity/index.vue';
 import PrimaryButton from '~/share/components/PrimaryButton/index.vue';
 import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 import ListButton from '~/share/components/ListButton/index.vue';
 
 import { useField, useForm } from 'vee-validate';
 import { toast } from 'vue3-toastify';
-import type { RequestCategoryType } from '~/modules/create/types/request-categorys';
-import type { RequestProductType } from '~/modules/create/types/request-product-types';
-import { useBuyListStore } from '~/modules/create/stores/buy-list';
+import type { RequestCategoryType } from '~/modules/list/types/request-categorys';
+import type { RequestProductType } from '~/modules/list/types/request-product-types';
+import { useBuyListStore } from '~/modules/list/stores/buy-list';
 import calculateTotalPrice from '~/utils/calculateTotalPrice';
 import { useDataListStore } from '~/share/stores/data-list';
 
 const router = useRouter();
+const route = useRoute();
+const listId = route.params.listId;
 
 const buyListStore = useBuyListStore();
-const { addToData } = useDataListStore();
+const { addToData, dataList } = useDataListStore();
 
 const listDataCategory = ref<RequestCategoryType[]>([]);
 const productTypes = ref<RequestProductType[]>([]);
 
-const listName = ref(null);
+const listName = ref<string | null>(null);
 const imageRef = ref<string>('');
 const isOpenForm = ref<boolean>(false);
 const isOpenAlert = ref<boolean>(false);
@@ -169,6 +171,14 @@ watch(category, () => {
 });
 
 onMounted(() => {
+  if (listId !== 'new') {
+    const selectedList = dataList.find((list) => list.id === listId);
+    if (selectedList) {
+      buyListStore.setListItems(selectedList.data);
+      listName.value = selectedList.name ?? null;
+    }
+  }
+
   getCategorys();
   getProductTypes();
 });
@@ -216,11 +226,11 @@ onBeforeRouteLeave(() => {
             <SecondaryButton @click="isOpenForm = true" type="button"> Adicionar novo item </SecondaryButton>
           </div>
           <div class="lg:hidden">
-            <PrimaryButton @click="saveList"> Concluir lista </PrimaryButton>
+            <PrimaryButton @click="saveList"> Concluir </PrimaryButton>
           </div>
 
           <div class="w-full max-lg:hidden" :class="{ 'lg:hidden': buyListStore.listItems.length === 0 }">
-            <SecondaryButton @click="saveList" type="button"> Concluir lista </SecondaryButton>
+            <SecondaryButton @click="saveList" type="button"> Concluir </SecondaryButton>
           </div>
         </div>
       </div>

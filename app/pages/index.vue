@@ -4,10 +4,6 @@ import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 import { useDataListStore } from '~/share/stores/data-list';
 
 const dataListStore = useDataListStore();
-
-const handleEdit = () => {};
-
-const handleView = () => {};
 </script>
 
 <template>
@@ -15,15 +11,13 @@ const handleView = () => {};
     <img src="@/assets/imgs/full_logo.png" alt="logo" />
 
     <div class="max-w-80 w-full flex flex-col gap-4">
-      <ListButton
-        showActions
-        v-for="buyList in dataListStore.dataList"
-        :listItems="buyList.data"
-        :listName="buyList.name"
-        @delete="() => dataListStore.removeFromData(buyList.id ?? '')"
-      />
+      <template v-for="buyList in dataListStore.dataList" :key="`list-${buyList.id}`">
+        <NuxtLink :to="`/read/${buyList.id ?? ''}`">
+          <ListButton showActions :listItems="buyList.data" :listName="buyList.name" />
+        </NuxtLink>
+      </template>
 
-      <NuxtLink to="/create">
+      <NuxtLink to="/list/new">
         <SecondaryButton label="Criar uma lista de compras">
           <div class="flex gap-2 items-center">
             <div class="size-12 bg-primary-100 flex justify-center items-center rounded-xl">

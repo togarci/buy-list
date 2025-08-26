@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useBuyListStore } from '~/modules/create/stores/buy-list';
+import { useBuyListStore } from '~/modules/list/stores/buy-list';
 import type { buyItem } from '~/share/types';
 import { currencyBRLMask } from '~/utils/currency-brl';
 
@@ -16,8 +16,6 @@ const props = defineProps<{
   listName?: string;
   listItems: buyItem[];
 }>();
-
-const emits = defineEmits(['delete', 'edit', 'view']);
 
 watch(
   () => props.listItems,
@@ -36,15 +34,7 @@ watch(
 </script>
 
 <template>
-  <div
-    @click="
-      () => {
-        if (showActions) isOpenActions = !isOpenActions;
-      }
-    "
-    class="flex flex-col border border-gray-200 p-3.5 w-full rounded-xl"
-    :class="{ 'gap-3': (showActions && isOpenActions) || editionMode }"
-  >
+  <div class="flex flex-col border border-gray-200 p-3.5 gap-3 w-full rounded-xl">
     <div class="flex w-full h-min cursor-pointer gap-3 items-center">
       <div class="size-12 bg-gray-100 flex justify-center items-center rounded-xl">
         <Icon name="mdi:file-document-outline" class="text-2xl text-gray-700" />
@@ -70,32 +60,6 @@ watch(
         <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
       </div>
     </div>
-
-    <template v-if="showActions">
-      <div
-        class="w-full flex gap-2.5 items-center overflow-hidden transition-all"
-        :class="{ 'h-0': !isOpenActions, 'h-5': isOpenActions }"
-      >
-        <button
-          @click="emits('view')"
-          class="cursor-pointer text-green-900 text-xs h-min bg-green-300 px-3 rounded-lg py-0.5"
-        >
-          Ver
-        </button>
-        <button
-          @click="emits('edit')"
-          class="cursor-pointer text-blue-900 text-xs h-min bg-blue-300 rounded-lg py-0.5 px-3"
-        >
-          Editar
-        </button>
-        <button
-          @click="emits('delete')"
-          class="cursor-pointer text-red-900 bg-red-300 h-min text-xs px-3 py-0.5 rounded-lg"
-        >
-          Deletar
-        </button>
-      </div>
-    </template>
 
     <template v-if="editionMode && buyListStore.listItems.length > 0">
       <hr class="w-full h-px text-gray-200" />
