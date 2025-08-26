@@ -3,17 +3,25 @@ import ListButton from '~/share/components/ListButton/index.vue';
 import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 import { useDataListStore } from '~/share/stores/data-list';
 
-const { dataList } = useDataListStore();
+const dataListStore = useDataListStore();
+
+const handleEdit = () => {};
+
+const handleView = () => {};
 </script>
 
 <template>
   <main class="flex min-h-screen min-w-screen flex-col justify-center gap-10 items-center">
     <img src="@/assets/imgs/full_logo.png" alt="logo" />
 
-    <div class="max-w-96 flex flex-col gap-4">
-      <NuxtLink v-for="buyList in dataList" to="/read/56431">
-        <ListButton :listItems="buyList.data" :listName="buyList.name" />
-      </NuxtLink>
+    <div class="max-w-80 w-full flex flex-col gap-4">
+      <ListButton
+        showActions
+        v-for="buyList in dataListStore.dataList"
+        :listItems="buyList.data"
+        :listName="buyList.name"
+        @delete="() => dataListStore.removeFromData(buyList.id ?? '')"
+      />
 
       <NuxtLink to="/create">
         <SecondaryButton label="Criar uma lista de compras">

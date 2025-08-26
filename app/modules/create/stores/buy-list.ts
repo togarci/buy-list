@@ -15,5 +15,9 @@ export const useBuyListStore = defineStore('buyList', () => {
     listItems.value = listItems.value.filter((item) => item.id !== id);
   }
 
-  return { listItems, setListItems, addToList, removeFromList };
+  function clearList() {
+    listItems.value = [];
+  }
+
+  return { listItems, setListItems, addToList, removeFromList, clearList };
 });

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios';
+import Alert from '~/share/components/Alert/index.vue';
 import HeaderBackRoute from '~/share/components/HeaderBaskRoute.vue/index.vue';
 import CustomImageInput from '~/modules/create/components/CustomImageInput/index.vue';
 import productFormSchema from '~/modules/create/schemas/productFormSchema';
@@ -29,6 +30,8 @@ const productTypes = ref<RequestProductType[]>([]);
 const listName = ref(null);
 const imageRef = ref<string>('');
 const isOpenForm = ref<boolean>(false);
+const isOpenAlert = ref<boolean>(false);
+const nextPage: any = ref('');
 
 const optionsCategorys = ref<options[]>([]);
 const optionsSubCategorys = ref<options[]>([]);
@@ -144,6 +147,12 @@ const handleBack = () => {
   isOpenForm.value ? (isOpenForm.value = false) : router.back();
 };
 
+const handleAlertAction = () => {
+  isOpenAlert.value = false;
+  buyListStore.clearList();
+  router.push(nextPage);
+};
+
 watch(category, () => {
   if (category.value) {
     const selectedCategory = listDataCategory.value.find((cat) => cat.category === category.value);
@@ -163,10 +172,27 @@ onMounted(() => {
   getCategorys();
   getProductTypes();
 });
+
+onBeforeRouteLeave((to, from, next) => {
+  if (buyListStore.listItems.length > 0) {
+    isOpenAlert.value = true;
+    nextPage.value = to.fullPath;
+  } else {
+    next();
+  }
+});
 </script>
 
 <template>
   <main class="flex min-h-screen flex-col gap-10 p-5 xl:p-20">
+    <Alert
+      v-model="isOpenAlert"
+      ctaLabel="Sair"
+      description="Deseja realmente sair?"
+      title="Você tem uma lista não salva!"
+      @handleSubmit="handleAlertAction"
+    />
+
     <div class="lg:hidden">
       <HeaderBackRoute @click="handleBack" id="create_page_back_route" label="Criando Lista" />
     </div>
