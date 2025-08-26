@@ -12,15 +12,14 @@ defineProps<{
 const isOpenAlert = defineModel();
 const modalRef: any = ref(null);
 
-onMounted(() => {
-  window.addEventListener('click', (evt) => {
-    if (modalRef.value && !modalRef.value?.contains(evt.target)) isOpenAlert.value = false;
-  });
-});
+const handleClick = (evt: any) => {
+  if (modalRef.value && !modalRef.value?.contains(evt.target)) isOpenAlert.value = false;
+};
 </script>
 
 <template>
   <div
+    @click="(evt) => handleClick(evt)"
     v-if="isOpenAlert"
     class="fixed top-0 right-0 z-40 w-screen h-screen flex items-center justify-center backdrop-blur-sm"
   >

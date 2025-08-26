@@ -31,7 +31,6 @@ const listName = ref(null);
 const imageRef = ref<string>('');
 const isOpenForm = ref<boolean>(false);
 const isOpenAlert = ref<boolean>(false);
-const nextPage: any = ref('');
 
 const optionsCategorys = ref<options[]>([]);
 const optionsSubCategorys = ref<options[]>([]);
@@ -139,6 +138,7 @@ const saveList = () => {
   };
 
   addToData(body);
+  buyListStore.clearList();
   toast.success('Lista salva com sucesso !');
   router.push('/');
 };
@@ -150,7 +150,7 @@ const handleBack = () => {
 const handleAlertAction = () => {
   isOpenAlert.value = false;
   buyListStore.clearList();
-  router.push(nextPage);
+  router.push('/');
 };
 
 watch(category, () => {
@@ -173,13 +173,13 @@ onMounted(() => {
   getProductTypes();
 });
 
-onBeforeRouteLeave((to, from, next) => {
+onBeforeRouteLeave(() => {
   if (buyListStore.listItems.length > 0) {
     isOpenAlert.value = true;
-    nextPage.value = to.fullPath;
-  } else {
-    next();
+    return false;
   }
+
+  return true;
 });
 </script>
 
@@ -194,10 +194,14 @@ onBeforeRouteLeave((to, from, next) => {
     />
 
     <div class="lg:hidden">
-      <HeaderBackRoute @click="handleBack" id="create_page_back_route" label="Criando Lista" />
+      <HeaderBackRoute
+        @click="handleBack"
+        id="create_page_back_route"
+        :label="isOpenForm ? 'Voltar' : 'Criando Lista'"
+      />
     </div>
     <div class="max-lg:hidden">
-      <HeaderBackRoute @click="() => router.back()" id="create_page_back_route" label="Criando Lista" />
+      <HeaderBackRoute @click="() => router.push('/')" id="create_page_back_route" label="Criando Lista" />
     </div>
 
     <div class="flex max-lg:flex-1 lg:h-min max-lg:justify-center gap-10">
