@@ -203,16 +203,7 @@ onBeforeRouteLeave(() => {
       @handleSubmit="handleAlertAction"
     />
 
-    <div class="lg:hidden">
-      <HeaderBackRoute
-        @click="handleBack"
-        id="create_page_back_route"
-        :label="isOpenForm ? 'Voltar' : 'Criando Lista'"
-      />
-    </div>
-    <div class="max-lg:hidden">
-      <HeaderBackRoute @click="() => router.push('/')" id="create_page_back_route" label="Criando Lista" />
-    </div>
+    <HeaderBackRoute @click="handleBack" id="create_page_back_route" :label="isOpenForm ? 'Voltar' : 'Criando Lista'" />
 
     <div class="flex max-lg:flex-1 lg:h-min max-lg:justify-center gap-10">
       <div
