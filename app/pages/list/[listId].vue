@@ -210,7 +210,7 @@ onBeforeRouteLeave(() => {
         class="lg:w-80 gap-5 lg:flex w-full flex-col"
         :class="{ hidden: isOpenForm, 'flex max-lg:justify-between min-h-full': !isOpenForm }"
       >
-        <ListButton :listItems="buyListStore.listItems" editionMode v-model="listName" />
+        <ListButton :listItems="buyListStore.listItems" showItems v-model="listName" />
 
         <div class="flex flex-col w-full gap-2.5">
           <div class="lg:hidden">

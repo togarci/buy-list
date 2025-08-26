@@ -5,16 +5,14 @@ import { currencyBRLMask } from '~/utils/currency-brl';
 
 const buyListStore = useBuyListStore();
 const lenCategory = ref(0);
-const isOpenActions = ref(false);
 
 const model = defineModel();
 
 const props = defineProps<{
   showItems?: boolean;
-  editionMode?: boolean;
-  showActions?: boolean;
   listName?: string;
   listItems: buyItem[];
+  variant?: 'borderless';
 }>();
 
 watch(
@@ -42,7 +40,7 @@ watch(
 
       <div class="flex flex-1 flex-col gap-1.5">
         <input
-          v-if="editionMode"
+          v-if="showItems"
           type="text"
           v-model="model"
           class="font-bold text-sm placeholder:text-black"
@@ -56,12 +54,12 @@ watch(
         >
       </div>
 
-      <div class="ease-linear transition-all" :class="{ 'rotate-90': isOpenActions, 'rotate-0': !isOpenActions }">
+      <template v-if="showItems">
         <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
-      </div>
+      </template>
     </div>
 
-    <template v-if="editionMode && buyListStore.listItems.length > 0">
+    <template v-if="showItems && buyListStore.listItems.length > 0">
       <hr class="w-full h-px text-gray-200" />
 
       <div class="flex flex-col gap-2 w-full">
