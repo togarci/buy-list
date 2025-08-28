@@ -12,7 +12,9 @@ export const useDataListStore = defineStore(
       dataList.value.push({ ...item, id: uuid });
     }
 
-    function removeFromData(id: string | number) {
+    function removeFromData(id?: string | number) {
+      if (!id) return;
+
       dataList.value = dataList.value.filter((item) => item.id !== id);
     }
 

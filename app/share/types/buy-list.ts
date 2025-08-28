@@ -3,6 +3,7 @@ export interface buyItem {
   price: number;
   totalPrice: number;
   quantity: number;
+  checked: boolean;
   product: {
     image: string | null;
     name: string;

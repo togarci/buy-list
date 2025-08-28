@@ -4,6 +4,18 @@ import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  components: [
+    {
+      path: '~/modules',
+      pathPrefix: false,
+      pattern: '**/components',
+    },
+    {
+      path: '~/share',
+      pathPrefix: false,
+      pattern: 'components',
+    },
+  ],
   app: {
     head: {
       title: 'Buy List',

@@ -15,6 +15,8 @@ const props = defineProps<{
   variant?: 'borderless';
 }>();
 
+const emits = defineEmits(['delete']);
+
 watch(
   () => props.listItems,
   (newList) => {
@@ -59,6 +61,15 @@ watch(
 
       <template v-if="!showItems && variant !== 'borderless'">
         <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
+      </template>
+
+      <template v-if="variant === 'borderless'">
+        <button
+          @click="emits('delete')"
+          class="size-10 flex items-center justify-center cursor-pointer bg-gray-100 rounded-full"
+        >
+          <Icon name="material-symbols:delete-outline" class="text-gray-900 text-xl" />
+        </button>
       </template>
     </div>
 
