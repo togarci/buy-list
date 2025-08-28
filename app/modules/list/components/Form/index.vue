@@ -106,9 +106,10 @@ const submit = handleSubmit((values) => {
 
   const body = {
     id: buyListStore.listItems.length,
-    price: values.price,
-    totalPrice: totalPrice,
-    quantity: values.quantity,
+    price: Number(values.price),
+    totalPrice: Number(totalPrice),
+    quantity: Number(values.quantity),
+    checked: false,
     product: {
       image: imageRef.value,
       name: values.productName,
