@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ListButton from '~/share/components/ListButton/index.vue';
 import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
-import { useDataListStore } from '~/share/stores/data-list';
+import { useDataListStore } from '~/share/stores/dataList';
 
 const dataListStore = useDataListStore();
 </script>

@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const schema = Yup.object({
+const productFormSchema = Yup.object({
   category: Yup.string().required('Campo obrigatório'),
   subCategory: Yup.string(),
   productName: Yup.string().required('Campo obrigatório'),
@@ -15,4 +15,4 @@ const schema = Yup.object({
     .required('Campo obrigatório'),
 });
 
-export default schema;
+export default productFormSchema;

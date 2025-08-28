@@ -12,6 +12,6 @@ const emits = defineEmits(['click']);
     <div>
       <Icon name="material-symbols:arrow-left-alt-rounded" class="text-2xl" />
     </div>
-    <label :for="id" class="font-bold font-Montserrat text-xl">{{ label }}</label>
+    <label :for="id" class="font-bold font-Montserrat line-clamp-1 text-xl">{{ label }}</label>
   </button>
 </template>

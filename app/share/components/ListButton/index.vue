@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useBuyListStore } from '~/modules/list/stores/buy-list';
 import type { buyItem } from '~/share/types';
-import { currencyBRLMask } from '~/utils/currency-brl';
+import { currencyBRLMask } from '~/utils/currencyBRL';
 
 const buyListStore = useBuyListStore();
-const lenCategory = ref(0);
+const allCategorys = ref<string[]>([]);
 
 const model = defineModel();
 
@@ -25,14 +25,17 @@ watch(
       return acc;
     }, [] as string[]);
 
-    lenCategory.value = filteredCategories.length;
+    allCategorys.value = filteredCategories;
   },
   { deep: true, immediate: true }
 );
 </script>
 
 <template>
-  <div class="flex flex-col border border-gray-200 p-3.5 gap-3 w-full rounded-xl">
+  <div
+    class="flex flex-col gap-3 w-full rounded-xl"
+    :class="{ 'border border-gray-200 p-3.5': variant !== 'borderless' }"
+  >
     <div class="flex w-full h-min cursor-pointer gap-3 items-center">
       <div class="size-12 bg-gray-100 flex justify-center items-center rounded-xl">
         <Icon name="mdi:file-document-outline" class="text-2xl text-gray-700" />
@@ -50,11 +53,11 @@ watch(
         <p v-else class="font-bold text-sm line-clamp-1">{{ listName }}</p>
 
         <span class="text-xs font-medium text-gray-600"
-          >{{ lenCategory }} categoria / {{ props.listItems.length }} item</span
+          >{{ allCategorys.length }} categoria / {{ props.listItems.length }} item</span
         >
       </div>
 
-      <template v-if="showItems">
+      <template v-if="!showItems && variant !== 'borderless'">
         <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
       </template>
     </div>
