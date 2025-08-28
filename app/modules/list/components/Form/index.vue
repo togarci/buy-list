@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import axios from 'axios';
-
 import { toast } from 'vue3-toastify';
 import { useField, useForm } from 'vee-validate';
 import { useBuyListStore } from '~/modules/list/stores/buy-list';
@@ -15,6 +13,8 @@ import CustomImageInput from '~/modules/list/components/CustomImageInput/index.v
 import PrimaryButton from '~/share/components/PrimaryButton/index.vue';
 import calculateTotalPrice from '~/utils/calculateTotalPrice';
 import productFormSchema from './schema';
+
+import { getCategory, getType } from '~/modules/list/services';
 
 const emit = defineEmits(['submit']);
 const buyListStore = useBuyListStore();
@@ -59,8 +59,8 @@ const { value: quantity, errorMessage: quantityFormError } = useField('quantity'
 
 const getCategorys = async () => {
   try {
-    const { data } = await axios.get<RequestCategoryType[]>('/api/category');
-    optionsCategorys.value = data?.map((item, index) => {
+    const data = await getCategory();
+    optionsCategorys.value = data?.map((item) => {
       return {
         label: item.category,
         value: item.category,
@@ -75,7 +75,7 @@ const getCategorys = async () => {
 
 const getProductTypes = async () => {
   try {
-    const { data } = await axios.get<RequestProductType[]>('/api/product-types');
+    const data = await getType();
 
     const options = data.map((item) => {
       return {
