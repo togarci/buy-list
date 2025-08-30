@@ -28,7 +28,7 @@ const decrease = () => {
         type="button"
         :disabled="Number(model) < 2"
         @click="decrease"
-        class="font-light flex disabled:text-gray-400 items-center justify-center font-Montserrat"
+        class="font-light flex cursor-pointer disabled:text-gray-400 items-center justify-center font-Montserrat"
         :class="{
           'rounded-full bg-gray-150 size-6 text-xl': variant === 'rounded',
           'size-7 text-3xl': variant === 'default',
@@ -53,7 +53,7 @@ const decrease = () => {
       <button
         type="button"
         @click="increment"
-        class="font-light flex items-center justify-center font-Montserrat"
+        class="font-light flex cursor-pointer items-center justify-center font-Montserrat"
         :class="{
           'rounded-full bg-gray-150 size-6 text-xl': variant === 'rounded',
           'size-7 text-3xl': variant === 'default',

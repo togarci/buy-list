@@ -62,35 +62,43 @@ onMounted(() => {
   <main class="flex flex-col gap-5 p-5 xl:p-20">
     <HeaderBackRoute @click="router.push('/')" id="create_page_back_route" :label="`Lista ${selectedList?.name}`" />
 
-    <section class="flex pb-1.5 border-b border-gray-100 flex-col gap-5">
-      <ListButton
-        @delete="handleDeleteData"
-        :listName="selectedList?.name"
-        :listItems="selectedList?.data ?? []"
-        variant="borderless"
-      />
+    <div class="flex flex-col lg:flex-row lg:gap-5">
+      <section
+        class="flex h-min max-lg:pb-1.5 lg:p-3.5 rounded-xl lg:w-80 border-b lg:border border-gray-100 flex-col gap-5"
+      >
+        <ListButton
+          @delete="handleDeleteData"
+          :listName="selectedList?.name"
+          :listItems="selectedList?.data ?? []"
+          variant="borderless"
+        />
 
-      <div class="flex justify-between items-center w-full font-bold text-sm">
-        <p>Total do carrinho</p>
-        <p>{{ currencyBRLMask(totalPrice) }}</p>
-      </div>
-    </section>
-
-    <section class="flex flex-col gap-5">
-      <template v-for="category in allCategorys">
-        <p class="text-xs font-medium">{{ category }}</p>
-
-        <div class="flex gap-1.5 flex-col">
-          <ListItem
-            v-for="item in selectedList?.data.filter((sList) => sList.product.category === category)"
-            :name="item.product.name"
-            :price="item.price"
-            :shortType="item.product.shortType"
-            v-model:quantity="item.quantity"
-            v-model:checked="item.checked"
-          />
+        <div class="flex justify-between items-center w-full font-bold text-sm">
+          <p>Total do carrinho</p>
+          <p>{{ currencyBRLMask(totalPrice) }}</p>
         </div>
-      </template>
-    </section>
+      </section>
+
+      <div class="mt-7 mr-2 max-lg:hidden">
+        <Icon name="material-symbols:arrow-forward-ios-rounded" class="text-gray-600 text-base" />
+      </div>
+
+      <section class="flex flex-col lg:border lg:p-5 lg:rounded-xl w-full lg:max-w-xl border-gray-100 gap-5">
+        <template v-for="category in allCategorys">
+          <p class="text-xs font-medium">{{ category }}</p>
+
+          <div class="flex gap-1.5 flex-col">
+            <ListItem
+              v-for="item in selectedList?.data.filter((sList) => sList.product.category === category)"
+              :name="item.product.name"
+              :price="item.price"
+              :shortType="item.product.shortType"
+              v-model:quantity="item.quantity"
+              v-model:checked="item.checked"
+            />
+          </div>
+        </template>
+      </section>
+    </div>
   </main>
 </template>

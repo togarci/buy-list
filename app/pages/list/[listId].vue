@@ -89,7 +89,7 @@ onBeforeRouteLeave(() => {
 
     <HeaderBackRoute @click="handleBack" id="create_page_back_route" :label="isOpenForm ? 'Voltar' : 'Criando Lista'" />
 
-    <div class="flex max-lg:flex-1 lg:h-min max-lg:justify-center gap-10">
+    <div class="flex max-lg:flex-1 lg:h-min max-lg:justify-center gap-5">
       <div
         class="lg:w-80 gap-5 lg:flex w-full flex-col"
         :class="{ hidden: isOpenForm, 'flex max-lg:justify-between min-h-full': !isOpenForm }"
@@ -108,6 +108,10 @@ onBeforeRouteLeave(() => {
             <SecondaryButton @click="saveList" type="button"> Concluir </SecondaryButton>
           </div>
         </div>
+      </div>
+
+      <div class="mt-7 mr-2 max-lg:hidden">
+        <Icon name="material-symbols:arrow-forward-ios-rounded" class="text-gray-600 text-base" />
       </div>
 
       <Form ref="formRef" @submit="addItem" :isOpenForm="isOpenForm" />
