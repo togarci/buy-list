@@ -45,6 +45,10 @@ const handleDeleteData = () => {
   router.push('/');
 };
 
+const handleUpdateData = () => {
+  router.push(`/list/${listId}`);
+};
+
 watch(() => listId, handleSelectList);
 
 watch(
@@ -67,7 +71,8 @@ onMounted(() => {
         class="flex h-min max-lg:pb-1.5 lg:p-3.5 rounded-xl lg:w-80 border-b lg:border border-gray-100 flex-col gap-5"
       >
         <ListButton
-          @delete="handleDeleteData"
+          @actionDelete="handleDeleteData"
+          @actionUpdate="handleUpdateData"
           :listName="selectedList?.name"
           :listItems="selectedList?.data ?? []"
           variant="borderless"

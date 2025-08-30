@@ -5,6 +5,7 @@ import { currencyBRLMask } from '~/utils/currencyBRL';
 
 const buyListStore = useBuyListStore();
 const allCategorys = ref<string[]>([]);
+const isOpenMenu = ref(false);
 
 const model = defineModel();
 
@@ -15,7 +16,7 @@ const props = defineProps<{
   variant?: 'borderless';
 }>();
 
-const emits = defineEmits(['delete']);
+const emits = defineEmits(['actionDelete', 'actionUpdate']);
 
 watch(
   () => props.listItems,
@@ -63,14 +64,28 @@ watch(
         <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
       </template>
 
-      <template v-if="variant === 'borderless'">
+      <div v-if="variant === 'borderless'" class="relative">
         <button
-          @click="emits('delete')"
+          @click="isOpenMenu = !isOpenMenu"
           class="size-10 flex items-center justify-center cursor-pointer bg-gray-100 rounded-full"
         >
-          <Icon name="material-symbols:delete-outline" class="text-gray-900 text-xl" />
+          <Icon name="material-symbols:more-vert" class="text-gray-900 text-xl" />
         </button>
-      </template>
+
+        <ul
+          v-if="isOpenMenu"
+          class="absolute border flex flex-col border-gray-100 py-2 w-36 rounded-xl bg-gray-50 -bottom-20 right-0"
+        >
+          <li @click="emits('actionUpdate')" class="flex py-2 px-3 hover:bg-gray-200/80 gap-2 items-center">
+            <Icon name="material-symbols:edit-square-outline" class="text-base" />
+            <p class="font-bold text-sm">Editar</p>
+          </li>
+          <li @click="emits('actionDelete')" class="flex py-2 px-3 gap-2 items-center hover:bg-gray-200/80">
+            <Icon name="material-symbols:delete-outline" class="text-base" />
+            <p class="font-bold text-sm">Deletar</p>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <template v-if="showItems && buyListStore.listItems.length > 0">

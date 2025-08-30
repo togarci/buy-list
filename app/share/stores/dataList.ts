@@ -5,11 +5,20 @@ export const useDataListStore = defineStore(
   () => {
     const dataList = ref<dataList[]>([]);
 
-    function addToData(item: dataList) {
+    function addToData(data: dataList) {
       const uuid = crypto.randomUUID();
-      if (!item.name) item.name = `Lista ${uuid}`;
+      if (!data.name) data.name = `Lista ${uuid}`;
 
-      dataList.value.push({ ...item, id: uuid });
+      dataList.value.push({ ...data, id: uuid });
+    }
+
+    function updateData(id: string, list: dataList) {
+      dataList.value.forEach((item) => {
+        if (item.id === id) {
+          item.name = list.name;
+          item.data = list.data;
+        }
+      });
     }
 
     function removeFromData(id?: string | number) {
@@ -18,7 +27,7 @@ export const useDataListStore = defineStore(
       dataList.value = dataList.value.filter((item) => item.id !== id);
     }
 
-    return { dataList, addToData, removeFromData };
+    return { dataList, addToData, removeFromData, updateData };
   },
   { persist: true }
 );

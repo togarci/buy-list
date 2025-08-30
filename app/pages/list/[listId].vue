@@ -13,10 +13,10 @@ import { useDataListStore } from '~/share/stores/dataList';
 
 const router = useRouter();
 const route = useRoute();
-const listId = route.params.listId;
+const listId: any = route.params.listId;
 
 const buyListStore = useBuyListStore();
-const { addToData, dataList } = useDataListStore();
+const { addToData, dataList, updateData } = useDataListStore();
 
 const listName = ref<string | null>(null);
 const isOpenForm = ref<boolean>(false);
@@ -36,12 +36,12 @@ const addItem = (body: any) => {
 };
 
 const saveList = () => {
-  const body = {
+  let body: any = {
     name: listName.value ?? '',
     data: buyListStore.listItems,
   };
 
-  addToData(body);
+  listId === 'new' ? addToData(body) : updateData(listId, body);
   buyListStore.clearList();
   toast.success('Lista salva com sucesso !');
   router.push('/');
@@ -59,7 +59,9 @@ const handleAlertAction = () => {
 
 onMounted(() => {
   if (listId !== 'new') {
-    const selectedList = dataList.find((list) => list.id === listId);
+    let selectedList = dataList.find((list) => list.id === listId);
+    selectedList = JSON.parse(JSON.stringify(selectedList));
+
     if (selectedList) {
       buyListStore.setListItems(selectedList.data);
       listName.value = selectedList.name ?? null;
