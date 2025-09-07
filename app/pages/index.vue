@@ -3,6 +3,10 @@ import ListButton from '~/share/components/ListButton/index.vue';
 import SecondaryButton from '~/share/components/SecondaryButton/index.vue';
 import { useDataListStore } from '~/share/stores/dataList';
 
+definePageMeta({
+  title: 'Buy List - Home',
+});
+
 const dataListStore = useDataListStore();
 </script>
 

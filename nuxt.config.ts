@@ -21,7 +21,18 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Buy List',
-      meta: [{ name: 'description', content: 'A simple buy list application' }],
+      htmlAttrs: {
+        lang: 'pt-br',
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          name: 'description',
+          content: 'A simple buy list application',
+        },
+        { name: 'format-detection', content: 'telephone=yes' },
+      ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

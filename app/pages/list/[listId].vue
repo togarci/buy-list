@@ -24,6 +24,10 @@ const isOpenAlert = ref<boolean>(false);
 
 const formRef = ref<InstanceType<typeof Form> | null>(null);
 
+definePageMeta({
+  title: 'Buy List - Create',
+});
+
 const addItem = (body: any) => {
   try {
     buyListStore.addToList(body);

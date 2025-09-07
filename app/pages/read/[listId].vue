@@ -18,6 +18,10 @@ const allCategorys = ref<string[]>([]);
 
 const dataListStore = useDataListStore();
 
+definePageMeta({
+  title: `Buy List - ${selectedList.value?.name}`,
+});
+
 const calcPrices = () => {
   totalPrice.value = 0;
   selectedList.value?.data.forEach((item) => {
@@ -94,7 +98,7 @@ onMounted(() => {
 
           <div class="flex gap-1.5 flex-col">
             <ListItem
-              v-for="item in selectedList?.data.filter((sList) => sList.product.category === category)"
+              v-for="item in selectedList?.data.filter((sList: any) => sList.product.category === category)"
               :name="item.product.name"
               :price="item.price"
               :shortType="item.product.shortType"
