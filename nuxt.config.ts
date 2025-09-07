@@ -4,6 +4,8 @@ import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  modules: ['@vite-pwa/nuxt', '@nuxt/icon', '@nuxt/eslint', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
+
   components: [
     {
       path: '~/modules',
@@ -16,6 +18,7 @@ export default defineNuxtConfig({
       pattern: 'components',
     },
   ],
+
   app: {
     head: {
       title: 'Buy List',
@@ -35,7 +38,41 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ['@nuxt/icon', '@nuxt/eslint', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      display: 'standalone',
+      orientation: 'portrait',
+      theme_color: '#ffffff',
+      background_color: '#ffffff',
+      start_url: '/',
+      scope: '/',
+      name: 'Buy List',
+      short_name: 'BuyList',
+      description: 'A simple buylist',
+      icons: [
+        {
+          src: '/icons/app/192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/icons/app/512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    },
+
+    workbox: {
+      navigateFallback: '/html/offline.html',
+    },
+
+    devOptions: {
+      enabled: true,
+    },
+  },
+
   css: ['./app/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],

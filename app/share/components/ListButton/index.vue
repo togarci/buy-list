@@ -4,6 +4,7 @@ import type { buyItem } from '~/share/types';
 import { currencyBRLMask } from '~/utils/currencyBRL';
 
 const buyListStore = useBuyListStore();
+const itemMenu: any = ref(null);
 const allCategorys = ref<string[]>([]);
 const isOpenMenu = ref(false);
 
@@ -17,6 +18,12 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits(['actionDelete', 'actionUpdate']);
+
+onMounted(() => {
+  window.addEventListener('click', (evt) => {
+    if (itemMenu.value && !itemMenu.value?.contains(evt.target)) isOpenMenu.value = false;
+  });
+});
 
 watch(
   () => props.listItems,
@@ -64,7 +71,7 @@ watch(
         <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-xl text-gray-700 rotate-180" />
       </template>
 
-      <div v-if="variant === 'borderless'" class="relative">
+      <div ref="itemMenu" v-if="variant === 'borderless'" class="relative">
         <button
           @click="isOpenMenu = !isOpenMenu"
           class="size-10 flex items-center justify-center cursor-pointer bg-gray-100 rounded-full"
@@ -74,7 +81,7 @@ watch(
 
         <ul
           v-if="isOpenMenu"
-          class="absolute border flex flex-col border-gray-100 py-2 w-36 rounded-xl bg-gray-50 -bottom-20 right-0"
+          class="absolute border flex flex-col border-gray-100 py-2 w-36 rounded-xl bg-gray-50 -bottom-[85px] right-0"
         >
           <li @click="emits('actionUpdate')" class="flex py-2 px-3 hover:bg-gray-200/80 gap-2 items-center">
             <Icon name="material-symbols:edit-square-outline" class="text-base" />
