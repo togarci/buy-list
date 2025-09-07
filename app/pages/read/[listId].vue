@@ -70,7 +70,7 @@ onMounted(() => {
   <main class="flex flex-col gap-5 p-5 xl:p-20">
     <HeaderBackRoute @click="router.push('/')" id="create_page_back_route" :label="`Lista ${selectedList?.name}`" />
 
-    <div class="flex flex-col lg:flex-row lg:gap-5">
+    <div class="flex flex-col lg:flex-row gap-5">
       <section
         class="flex h-min max-lg:pb-1.5 lg:p-3.5 rounded-xl lg:w-80 border-b lg:border border-gray-100 flex-col gap-5"
       >
