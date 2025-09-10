@@ -79,8 +79,8 @@ const getProductTypes = async () => {
 
     const options = data.map((item) => {
       return {
-        label: `${item.tipo} / ${item.sigla}`,
-        value: item.sigla,
+        label: `${item.type} / ${item.shortType}`,
+        value: item.shortType,
       };
     });
 
@@ -102,7 +102,7 @@ const handleResetForm = () => {
 
 const submit = handleSubmit((values) => {
   const totalPrice = calculateTotalPrice(values.price, values.quantity);
-  const findProductType = productTypes.value.find((type) => type.sigla === values.type);
+  const findProductType = productTypes.value.find((type) => type.shortType === values.type);
 
   const body = {
     id: buyListStore.listItems.length,
@@ -115,8 +115,8 @@ const submit = handleSubmit((values) => {
       name: values.productName,
       category: values.category,
       subCategory: values.subCategory,
-      type: findProductType?.tipo ?? '',
-      shortType: findProductType?.sigla ?? '',
+      type: findProductType?.type ?? '',
+      shortType: findProductType?.shortType ?? '',
     },
   };
 

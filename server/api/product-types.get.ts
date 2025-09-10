@@ -1,17 +1,17 @@
 export default defineEventHandler(() => {
   const types = [
-    { tipo: 'unidade', sigla: 'un' },
-    { tipo: 'pacote', sigla: 'pac' },
-    { tipo: 'caixa', sigla: 'cx' },
-    { tipo: 'quilo', sigla: 'kg' },
-    { tipo: 'grama', sigla: 'g' },
-    { tipo: 'litro', sigla: 'l' },
-    { tipo: 'mililitro', sigla: 'ml' },
-    { tipo: 'metro', sigla: 'm' },
-    { tipo: 'sachê', sigla: 'sachê' },
-    { tipo: 'dúzia', sigla: 'dz' },
-    { tipo: 'par', sigla: 'par' },
-    { tipo: 'a granel (balança)', sigla: 'balança' },
+    { type: 'unidade', shortType: 'un' },
+    { type: 'pacote', shortType: 'pac' },
+    { type: 'caixa', shortType: 'cx' },
+    { type: 'quilo', shortType: 'kg' },
+    { type: 'grama', shortType: 'g' },
+    { type: 'litro', shortType: 'l' },
+    { type: 'mililitro', shortType: 'ml' },
+    { type: 'metro', shortType: 'm' },
+    { type: 'sachê', shortType: 'sachê' },
+    { type: 'dúzia', shortType: 'dz' },
+    { type: 'par', shortType: 'par' },
+    { type: 'a granel (balança)', shortType: 'balança' },
   ];
 
   return types;

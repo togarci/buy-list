@@ -1,14 +1,14 @@
 export interface buyItem {
-  id: string | number;
+  id?: string | number;
   price: number;
   totalPrice: number;
   quantity: number;
   checked: boolean;
   product: {
-    image: string | null;
+    image?: string | null;
     name: string;
     category: string;
-    subCategory: string;
+    subCategory?: string;
     type: string;
     shortType: string;
   };

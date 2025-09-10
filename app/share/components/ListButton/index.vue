@@ -117,7 +117,7 @@ watch(
                 </p>
 
                 <Icon
-                  @click="() => buyListStore.removeFromList(item.id)"
+                  @click="() => buyListStore.removeFromList(item.id ?? '')"
                   name="material-symbols:close"
                   class="text-red-600 text-xl cursor-pointer"
                 />

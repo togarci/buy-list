@@ -3,7 +3,14 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@vite-pwa/nuxt', '@nuxt/icon', '@nuxt/eslint', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt'],
+  modules: [
+    '@vite-pwa/nuxt',
+    '@nuxt/icon',
+    '@nuxt/eslint',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    '@nuxt/test-utils/module',
+  ],
 
   components: [
     {
