@@ -10,6 +10,10 @@ describe('calculateTotalPrice', () => {
     expect(calculateTotalPrice(10.345, 2)).toBe(20.69);
   });
 
+  it('retorna duas casas decimais', () => {
+    expect(calculateTotalPrice(11.542, 3)).toBe(34.63);
+  });
+
   it('returns 0 if quantity is 0', () => {
     expect(calculateTotalPrice(15.5, 0)).toBe(0);
   });
