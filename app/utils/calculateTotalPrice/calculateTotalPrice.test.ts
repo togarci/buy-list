@@ -10,7 +10,7 @@ describe('calculateTotalPrice', () => {
     expect(calculateTotalPrice(10.345, 2)).toBe(20.69);
   });
 
-  it('retorna duas casas decimais', () => {
+  it('returns two decimal places and rounds price', () => {
     expect(calculateTotalPrice(11.542, 3)).toBe(34.63);
   });
 
