@@ -12,7 +12,9 @@ export const useDataListStore = defineStore(
       dataList.value.push({ ...data, id: uuid });
     }
 
-    function updateData(id: string, list: dataList) {
+    function updateData(id?: string, list?: dataList) {
+      if (!id || !list) return;
+
       dataList.value.forEach((item) => {
         if (item.id === id) {
           item.name = list.name;

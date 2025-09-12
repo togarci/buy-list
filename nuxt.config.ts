@@ -82,10 +82,6 @@ export default defineNuxtConfig({
       ],
     },
 
-    workbox: {
-      navigateFallback: '/html/offline.html',
-    },
-
     devOptions: {
       enabled: true,
     },

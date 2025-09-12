@@ -15,7 +15,7 @@ export interface buyItem {
 }
 
 export interface dataList {
-  id?: string | number;
+  id?: string;
   name?: string;
   data: buyItem[];
 }
