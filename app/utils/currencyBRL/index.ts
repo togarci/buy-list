@@ -8,5 +8,5 @@ export const currencyBRLMask = (value: number, isWithoutSymbol?: boolean): strin
   if (isWithoutSymbol) {
     return transformedValue.replace('R$ ', '');
   }
-  return transformedValue;
+  return transformedValue.replace(/\u00A0/g, ' ');
 };

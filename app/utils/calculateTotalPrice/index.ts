@@ -1,5 +1,5 @@
 const calculateTotalPrice = (price: number, quantity: number) => {
-  const roundedPrice = Math.round(price * 100);
+  const roundedPrice = price * 100;
   const totalPrice = roundedPrice * quantity;
 
   return totalPrice / 100;
