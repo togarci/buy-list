@@ -29,6 +29,7 @@ onMounted(() => {
     <label class="text-xs font-medium" :for="name?.replaceAll(' ', '-')">{{ label }}</label>
     <div
       class="w-full relative flex items-center rounded-lg h-12 py-2 px-4 border"
+      data-testId="open-select-click"
       :class="{ 'border-red-600': error, 'border-gray-200': !error, 'bg-gray-300': disabled }"
       @click="
         () => {
@@ -55,6 +56,7 @@ onMounted(() => {
           type="button"
           v-for="(option, index) in options"
           :key="`${option.label}-${index}`"
+          :data-testId="`option-select-${index}`"
           class="w-full capitalize px-4 text-start hover:bg-gray-100 py-3"
           @click="model = option.value"
         >

@@ -8,11 +8,11 @@ const { variant = 'default' } = defineProps<{
 
 const model = defineModel();
 
-const increment = () => {
+const handleIncrement = () => {
   if (model.value && typeof model.value === 'number') model.value += 1;
 };
 
-const decrease = () => {
+const handleDecrease = () => {
   if (model.value && typeof model.value === 'number') model.value -= 1;
 };
 </script>
@@ -27,7 +27,8 @@ const decrease = () => {
       <button
         type="button"
         :disabled="Number(model) < 2"
-        @click="decrease"
+        @click="handleDecrease"
+        data-testId="quantity-input-decrease"
         class="font-light flex cursor-pointer disabled:text-gray-400 items-center justify-center font-Montserrat"
         :class="{
           'rounded-full bg-gray-150 size-6 text-xl': variant === 'rounded',
@@ -52,7 +53,8 @@ const decrease = () => {
 
       <button
         type="button"
-        @click="increment"
+        @click="handleIncrement"
+        data-testId="quantity-input-increase"
         class="font-light flex cursor-pointer items-center justify-center font-Montserrat"
         :class="{
           'rounded-full bg-gray-150 size-6 text-xl': variant === 'rounded',

@@ -24,7 +24,7 @@ const handleChange = (evt: Event) => {
 
   if (file?.size && file?.size > props.limitMbSize * 1024 * 1024) {
     toast.error('Tamanho excedido! A imagem deve ter no máximo 1 MB.', {
-      position: toast.POSITION.TOP_LEFT,
+      position: toast.POSITION.TOP_CENTER,
     });
 
     return;
