@@ -1,75 +1,60 @@
-# Nuxt Minimal Starter
+# 🛒 Shopping List App
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Aplicação para criar e visualizar listas de compras, contendo informações básicas e imagens dos produtos selecionados.
 
-## Setup
+> 🔹 Este projeto é uma **evolução do teste técnico para Frontend Developer da MKPlace**.  
+> No teste original, a proposta era desenvolver uma aplicação de listas de compras em até 20h.  
+> Aqui, o projeto foi expandido, aplicando **boas práticas, arquitetura híbrida modular, tipagem forte e ferramentas modernas**.
 
-Make sure to install dependencies:
+---
+
+## 🚀 Tecnologias utilizadas
+
+- ✅ Slot
+- ✅ Novo Tailwind
+- ✅ Vue 3
+- ✅ Nuxt v4
+- ✅ Nuxt Nitro
+- ✅ Responsivo
+- ✅ TypeScript
+- ✅ VeeValidate
+- ✅ Yup
+- ✅ Pinia
+- ✅ Nuxt Loading
+
+---
+
+## 📌 Funcionalidades
+
+- Criar listas de compras personalizadas.
+- Adicionar, editar e remover itens da lista.
+- Visualizar imagens dos produtos selecionados.
+- Validações de formulário com **VeeValidate + Yup**.
+- Interface responsiva e moderna.
+- Confirmação via **modal no mobile** ao tentar sair sem concluir lista.
+
+---
+
+## 🛠️ Como rodar o projeto
+
+Instale as dependências:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+Inicie o servidor de desenvolvimento:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
+Abra no navegador:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+http://localhost:3000
 ```
 
-Locally preview production build:
+## 🌐 Deploy
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+https://buy-list-seven.vercel.app
